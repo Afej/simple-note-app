@@ -12,7 +12,6 @@
     "@ckeditor/ckeditor5-build-decoupled-document": "^22.0.0",
     "@ckeditor/ckeditor5-vue": "^1.0.2",
     "core-js": "^3.6.5",
-    "uuid": "^8.3.0",
     "vue": "^2.6.11"
   },
   "devDependencies": {

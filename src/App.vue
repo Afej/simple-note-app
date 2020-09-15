@@ -1,9 +1,9 @@
 <template>
-  <div class="bg-blue-900 text-white min-h-screen">
+  <div class="bg-blue-900 text-white min-h-screen m-0 relative">
     <div class="container mx-auto xl:px-0 px-5">
       <!-- header -->
-      <div class="flex justify-between items-center py-3 border-b-2 border-white">
-        <h1 class="sm:text-5xl text-4xl">My Notes</h1>
+      <header class="flex justify-between items-center py-3 border-b-2 border-white">
+        <h1 class="sm:text-5xl text-4xl">Di Notes</h1>
 
         <!--  Add note icon -->
         <svg
@@ -20,14 +20,11 @@
             d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 14h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"
           />
         </svg>
-      </div>
+      </header>
 
       <!-- Notes Section -->
       <div class="py-10">
-        <div
-          v-if="!notes.length"
-          class="flex sm:flex-row flex-col items-center sm:my-10 my-20 px-5"
-        >
+        <div v-if="!notes.length" class="flex sm:flex-row flex-col items-center my-10 px-5">
           <img src="~@/assets/notes.svg" alt="notes image" class="sm:w-1/2" />
           <p class="sm:text-3xl text-xl mx-10 text-center">
             You have no notes,
@@ -35,15 +32,20 @@
             <span class="font-bold cursor-pointer" @click="createNote">+ button</span> at the top to begin.
           </p>
         </div>
-        <div
-          v-else
-          v-for="(note,index) in notes"
-          :key="index"
-          class="bg-blue-800 rounded mt-3 p-4"
-          @click="displayNote(note)"
-        >
-          <h2>{{note.title}}</h2>
-          <p>{{note.content}}</p>
+        <div v-else class="grid sm:grid-cols-3 grid-cols-1 gap-4 my-8">
+          <div
+            class="bg-blue-800 rounded my-3 p-4 min-h-full sm:h-56 h-40 relative"
+            v-for="(note,index) in notes"
+            :key="index"
+          >
+            <div @click="displayNote(note)">
+              <h2>{{note.title}}</h2>
+              <p class="break-all">{{note.content}}</p>
+            </div>
+            <span class="absolute bottom-0 right-0 mx-5 my-3">
+              <i class="fas fa-trash-alt cursor-pointer" @click="deleteNote(index)"></i>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -55,7 +57,7 @@
           >
             <button
               class="close-btn absolute top-0 right-0 mr-5 mt-2 appearance-none"
-              @click="close"
+              @click="closeModal"
             >
               <i class="fa fa-times text-2xl text-red-500"></i>
             </button>
@@ -76,7 +78,7 @@
                   @ready="onReady"
                   v-model="currentNote.content"
                   :config="editorConfig"
-                  class="appearance-none border-none w-full text-gray-700 py-1 px-2 leading-tight focus:outline-none h-64"
+                  class="appearance-none border-none w-full text-gray-700 py-1 px-2 leading-tight h-64"
                 ></ckeditor>
               </div>
             </div>
@@ -84,15 +86,14 @@
         </div>
       </div>
     </div>
+    <footer class="absolute bottom-0 inset-x-0 pb-5 text-center">
+      <p>Copyright &copy; 2020 Afej</p>
+    </footer>
   </div>
 </template>
 
 <script>
-// import Notes from "@/components/Notes";
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
-import { v4 as uuidv4 } from "uuid";
-uuidv4();
 
 export default {
   name: "App",
@@ -112,27 +113,37 @@ export default {
       },
     };
   },
+  mounted() {
+    if (localStorage.notes) {
+      this.notes = JSON.parse(localStorage.notes);
+    }
+  },
+  watch: {
+    notes(newNotes) {
+      localStorage.notes = JSON.stringify(newNotes);
+    },
+  },
   methods: {
     //this opens the modal with note editor
     createNote() {
-      this.modal = true;
-      // this.currentNote.title = "";
-      // this.currentNote.content = "";
+      this.notes.unshift({
+        title: "Untitled note",
+        content: "Click to edit contents...",
+      });
     },
     // this displays the note in the note editor
     displayNote(note) {
-      this.currentNote = note;
-      console.log("a note");
       this.modal = true;
+      this.currentNote = note;
     },
     // exiting the note editor
-    close() {
-      let newNote = this.currentNote;
-      if (newNote.title !== "") {
-        this.notes.push(newNote);
-      }
-
+    closeModal() {
       this.modal = false;
+      localStorage.notes = JSON.stringify(this.notes);
+    },
+    deleteNote(index) {
+      this.notes.splice(index, 1);
+      localStorage.notes = JSON.stringify(this.notes);
     },
     onReady(editor) {
       // Insert the toolbar before the editable area.
@@ -143,9 +154,6 @@ export default {
           editor.ui.getEditableElement()
         );
     },
-    // onEditorBlur() {
-    //   console.log("object");
-    // },
   },
 };
 </script>
