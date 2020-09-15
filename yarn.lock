@@ -861,6 +861,21 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@ckeditor/ckeditor5-build-classic@^22.0.0":
+  version "22.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-build-classic/-/ckeditor5-build-classic-22.0.0.tgz#24e4a32a4d68211c58b4ea49e794217bd61bf0b7"
+  integrity sha512-Vcy7vqSDv1xH6ACi2RW25+wIEEKrzEYb+dpgL/yTfhqv0wlswl4tn1VOfEbzGNrgQCio3djxkF813be29IfmWA==
+
+"@ckeditor/ckeditor5-build-decoupled-document@^22.0.0":
+  version "22.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-build-decoupled-document/-/ckeditor5-build-decoupled-document-22.0.0.tgz#769a99cbad093f86d86c147fdda5085082bef01b"
+  integrity sha512-omUlFdS2LRcKqEcKb9P9ZgJevYtetOoMShUH2p1kzEPdTtP9dddhnEqXkdQ6mTBXpaE2CglPMDqK+WUYKOyXUw==
+
+"@ckeditor/ckeditor5-vue@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-vue/-/ckeditor5-vue-1.0.2.tgz#e9fa282ec44356ca2240d7f7a5031d9b1df675d0"
+  integrity sha512-rKQCNtYb8T2pjv6f+ZSrKGe+UUrgnABUfyNv8pzUOCDz5Eg8FUopIqkAQBr6iVmaP3MfUQKlPQ760G9jtlP47Q==
+
 "@fullhuman/postcss-purgecss@^2.1.2":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@fullhuman/postcss-purgecss/-/postcss-purgecss-2.3.0.tgz#50a954757ec78696615d3e118e3fee2d9291882e"
@@ -8204,6 +8219,11 @@ uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"
   resolved "https://registry.npm.taobao.org/uuid/download/uuid-3.4.0.tgz?cache=0&sync_timestamp=1595886592565&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fuuid%2Fdownload%2Fuuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha1-sj5DWK+oogL+ehAK8fX4g/AgB+4=
+
+uuid@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.0.tgz#ab738085ca22dc9a8c92725e459b1d507df5d6ea"
+  integrity sha512-fX6Z5o4m6XsXBdli9g7DtWgAx+osMsRRZFKma1mIUsLCz6vRvv+pz5VNbyu9UEDzpMWulZfvpgb/cmDXVulYFQ==
 
 v8-compile-cache@^2.0.3:
   version "2.1.1"

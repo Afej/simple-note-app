@@ -35,7 +35,13 @@
             <span class="font-bold cursor-pointer" @click="createNote">+ button</span> at the top to begin.
           </p>
         </div>
-        <div v-else v-for="(note,index) in notes" :key="index" class="bg-blue-800 rounded mt-3 p-4">
+        <div
+          v-else
+          v-for="(note,index) in notes"
+          :key="index"
+          class="bg-blue-800 rounded mt-3 p-4"
+          @click="displayNote(note)"
+        >
           <h2>{{note.title}}</h2>
           <p>{{note.content}}</p>
         </div>
@@ -43,7 +49,7 @@
 
       <!-- modal for creating notes -->
       <div v-show="modal">
-        <div class="modal-container fixed inset-0 bg-black bg-opacity-50">
+        <div class="modal-container fixed inset-0 bg-black bg-opacity-50" id="modal-container">
           <div
             class="modal absolute overflow-hidden bg-white rounded-md shadow-xl m-h-full max-w-full w-4/5 md:w-8/12 lg:w-6/12"
           >
@@ -61,13 +67,17 @@
                   type="text"
                   placeholder="Title"
                   aria-label="title"
+                  v-model="currentNote.title"
                 />
               </div>
               <div class="my-4">
-                <textarea
+                <ckeditor
+                  :editor="editor"
+                  @ready="onReady"
+                  v-model="currentNote.content"
+                  :config="editorConfig"
                   class="appearance-none border-none w-full text-gray-700 py-1 px-2 leading-tight focus:outline-none h-64"
-                  placeholder="Enter your notes"
-                />
+                ></ckeditor>
               </div>
             </div>
           </div>
@@ -79,29 +89,63 @@
 
 <script>
 // import Notes from "@/components/Notes";
+// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
+import { v4 as uuidv4 } from "uuid";
+uuidv4();
 
 export default {
   name: "App",
   components: {},
   data() {
     return {
-      notes: [
-        // {
-        //   title: "bla bal bla",
-        //   content:
-        //     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, accusamus!",
-        // },
-      ],
+      notes: [],
+      currentNote: {
+        title: "",
+        content: "",
+      },
       modal: false,
+      editor: DecoupledEditor,
+      // editorData: "",
+      editorConfig: {
+        // The configuration of the editor.
+      },
     };
   },
   methods: {
+    //this opens the modal with note editor
     createNote() {
       this.modal = true;
+      // this.currentNote.title = "";
+      // this.currentNote.content = "";
     },
+    // this displays the note in the note editor
+    displayNote(note) {
+      this.currentNote = note;
+      console.log("a note");
+      this.modal = true;
+    },
+    // exiting the note editor
     close() {
+      let newNote = this.currentNote;
+      if (newNote.title !== "") {
+        this.notes.push(newNote);
+      }
+
       this.modal = false;
     },
+    onReady(editor) {
+      // Insert the toolbar before the editable area.
+      editor.ui
+        .getEditableElement()
+        .parentElement.insertBefore(
+          editor.ui.view.toolbar.element,
+          editor.ui.getEditableElement()
+        );
+    },
+    // onEditorBlur() {
+    //   console.log("object");
+    // },
   },
 };
 </script>
