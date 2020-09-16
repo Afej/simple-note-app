@@ -38,9 +38,9 @@
             v-for="(note,index) in notes"
             :key="index"
           >
-            <div @click="displayNote(note)">
+            <div @click="displayNote(index)">
               <h2>{{note.title}}</h2>
-              <p class="break-all">{{note.content}}</p>
+              <p class="break-all" v-html="note.content"></p>
             </div>
             <span class="absolute bottom-0 right-0 mx-5 my-3">
               <i class="fas fa-trash-alt cursor-pointer" @click="deleteNote(index)"></i>
@@ -79,7 +79,9 @@
                   v-model="currentNote.content"
                   :config="editorConfig"
                   class="appearance-none border-none w-full text-gray-700 py-1 px-2 leading-tight h-64"
+                  placeholder="Enter your contents"
                 ></ckeditor>
+                <!-- <wysiwyg v-model="currentNote.content" class="text-black" /> -->
               </div>
             </div>
           </div>
@@ -105,6 +107,7 @@ export default {
         title: "",
         content: "",
       },
+      currentIndex: null,
       modal: false,
       editor: DecoupledEditor,
       // editorData: "",
@@ -126,19 +129,44 @@ export default {
   methods: {
     //this opens the modal with note editor
     createNote() {
+      // this.modal = true;
       this.notes.unshift({
         title: "Untitled note",
         content: "Click to edit contents...",
       });
     },
     // this displays the note in the note editor
-    displayNote(note) {
+    displayNote(index) {
       this.modal = true;
-      this.currentNote = note;
+      this.currentNote = this.notes[index];
+      this.currentIndex = index;
+      console.log(this.currentIndex, "editing");
     },
     // exiting the note editor
     closeModal() {
       this.modal = false;
+
+      // if (this.currentIndex == null) {
+      //   this.notes.unshift(this.currentNote);
+      //   this.currentIndex = this.notes.length - 1;
+      // } else if (this.notes.length > this.currentIndex) {
+      //   this.notes.unshift(this.currentNote);
+      //   this.currentIndex = this.notes.length - 1;
+      //   // this.notes.splice(this.currentIndex, 0, this.currentNote);
+      //   console.log("inseerting");
+      // }
+
+      // if (this.currentIndex == this.notes[this.currentIndex]) {
+      //   this.notes.splice(this.currentIndex, 1, this.currentNote);
+      //   console.log("replacing");
+      // }
+      if (this.currentNote.title === "" && this.currentNote.content === "") {
+        this.modal = false;
+        this.notes.splice(this.currentIndex, 1);
+        this.currentIndex = this.notes.length - 1;
+        console.log("empty dets");
+      }
+
       localStorage.notes = JSON.stringify(this.notes);
     },
     deleteNote(index) {
@@ -159,6 +187,8 @@ export default {
 </script>
 
 <style  scoped>
+/* @import "~vue-wysiwyg/dist/vueWysiwyg.css"; */
+
 .modal {
   top: 50%;
   left: 50%;

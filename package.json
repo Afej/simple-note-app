@@ -12,7 +12,8 @@
     "@ckeditor/ckeditor5-build-decoupled-document": "^22.0.0",
     "@ckeditor/ckeditor5-vue": "^1.0.2",
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-wysiwyg": "^1.7.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
